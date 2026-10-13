@@ -1,0 +1,13 @@
+aws emr create-cluster \
+ --name "shiju-clusters" \
+ --log-uri "s3://aws-logs-084362064925-us-east-1/elasticmapreduce" \
+ --release-label "emr-6.11.0" \
+ --service-role "arn:aws:iam::084362064925:role/service-role/AmazonEMR-ServiceRole-20260924T003735" \
+ --unhealthy-node-replacement \
+ --ec2-attributes '{"InstanceProfile":"AmazonEMR-InstanceProfile-20260924T003718","EmrManagedMasterSecurityGroup":"sg-0c34bf7251d7b9c8d","EmrManagedSlaveSecurityGroup":"sg-0b0710c40b1b0c5f2","KeyName":"shiju-batch9-key","AdditionalMasterSecurityGroups":[],"AdditionalSlaveSecurityGroups":[],"SubnetIds":["subnet-0aa36a7b3b37146b9"]}' \
+ --tags 'env=dev' 'for-use-with-amazon-emr-managed-policies=true' \
+ --applications Name=HBase Name=Hadoop Name=Hive Name=Spark \
+ --instance-groups '[{"InstanceCount":1,"InstanceGroupType":"MASTER","Name":"Primary","InstanceType":"r8g.xlarge","EbsConfiguration":{"EbsBlockDeviceConfigs":[{"VolumeSpecification":{"VolumeType":"gp2","SizeInGB":32},"VolumesPerInstance":2}]}},{"InstanceCount":1,"InstanceGroupType":"TASK","Name":"Task - 1","InstanceType":"r8g.xlarge","EbsConfiguration":{"EbsBlockDeviceConfigs":[{"VolumeSpecification":{"VolumeType":"gp2","SizeInGB":32},"VolumesPerInstance":2}]}},{"InstanceCount":1,"InstanceGroupType":"CORE","Name":"Core","InstanceType":"r8g.xlarge","EbsConfiguration":{"EbsBlockDeviceConfigs":[{"VolumeSpecification":{"VolumeType":"gp2","SizeInGB":32},"VolumesPerInstance":2}]}}]' \
+ --scale-down-behavior "TERMINATE_AT_TASK_COMPLETION" \
+ --auto-termination-policy '{"IdleTimeout":600}' \
+ --region "us-east-1"
